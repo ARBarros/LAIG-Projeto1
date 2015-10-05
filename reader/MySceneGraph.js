@@ -258,7 +258,7 @@ MySceneGraph.prototype.parseLights = function(rootElement){
 		this.lights[i]["id"] = this.reader.getString(light, 'id', false);
 
 		var enable = this.reader.getElementsByTagName('enable');
-		this.lights[i]["enable value"] = this.reader.getItem(enable, 'value', ["0","1"]);
+		this.lights[i]["enable value"] = this.reader.getBoolean(enable, 'value',false);
 		if(this.lights[i]["enable value"] == null){
 			console.log("enable value attribute missing.");
 		}
@@ -337,6 +337,31 @@ MySceneGraph.prototype.parseLights = function(rootElement){
 	}
 
 }
+
+MySceneGraph.prototype.parseTextures = function(rootElement){
+	var elems = rootElement.getElementsByTagName('TEXTURES');
+	if (elems == null) {
+		return "TEXTURES element is missing.";
+	}
+
+	if (elems.length != 1) {
+		return "either zero or more than one 'TEXTURES' element found.";
+	}
+
+	for(i=0; i<elems.length; i++){
+		var textura = this.reader.getElementsByTagName('TEXTURE');
+		this.texturas[i]["id"] = this.reader.getString(textura, 'id',false);
+
+		var file = this.reader.getElementsByTagName('file');
+		this.texturas[i]["file path"] = this.reader.getString(file, 'path',false);
+
+		var amplif_factor = this.reader.getElementsByTagName('amplif_factor');
+		this.texturas[i]["amplif_factor s"] = this.reader.getFloat(amplif_factor, 's', false);
+		this.texturas[i]["amplif_factor t"] = this.reader.getFloat(amplif_factor, 't', false);
+	}
+}
+
+
 	
 /*
  * Callback to be executed on any read error

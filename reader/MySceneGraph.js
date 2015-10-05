@@ -218,6 +218,27 @@ MySceneGraph.prototype.parseIllumination = function(rootElement){
 	if(this.illumination["ambient a"] == null){
 		console.log("ambient a attribute missing.");
 	}
+
+	var background = this.reader.getElementsByTagName('background');
+	if(background = null){
+		return "background element is missing.";
+	}
+	this.illumination["background r"] = this.reader.getFloat(background, 'r', false);
+	if(this.illumination["background r"] == null){
+		console.log("background r attribute missing.");
+	}
+	this.illumination["background g"] = this.reader.getFloat(background, 'g', false);
+	if(this.illumination["background g"] == null){
+		console.log("background g attribute missing.");
+	}
+	this.illumination["background b"] = this.reader.getFloat(background, 'b', false);
+	if(this.illumination["background b"] == null){
+		console.log("background b attribute missing.");
+	}
+	this.illumination["background a"] = this.reader.getFloat(background, 'a', false);
+	if(this.illumination["background a"] == null){
+		console.log("background a attribute missing.");
+	}
 }
 
 MySceneGraph.prototype.parseLights = function(rootElement){
@@ -233,7 +254,86 @@ MySceneGraph.prototype.parseLights = function(rootElement){
 
 	for(i=0; i< elems.length; i++){ //ciclo para guardar num array de arrays as informações de cada bloco de luzes
 		var block = elems[i];
-		this.lights[i]
+		var light = this.reader.getElementsByTagName('LIGHT');
+		this.lights[i]["id"] = this.reader.getString(light, 'id', false);
+
+		var enable = this.reader.getElementsByTagName('enable');
+		this.lights[i]["enable value"] = this.reader.getItem(enable, 'value', ["0","1"]);
+		if(this.lights[i]["enable value"] == null){
+			console.log("enable value attribute missing.");
+		}
+		
+		var position = this.reader.getElementsByTagName('position');
+		this.lights[i]["position x"] = this.reader.getFloat(position, 'x',false);
+		if(this.lights[i]["position x"] == null){
+			console.log("position x attribute missing.");
+		}
+		this.lights[i]["position y"] = this.reader.getFloat(position, 'y',false);
+		if(this.lights[i]["position x"] == null){
+			console.log("position x attribute missing.");
+		}
+		this.lights[i]["position z"] = this.reader.getFloat(position, 'z',false);
+		if(this.lights[i]["position x"] == null){
+			console.log("position x attribute missing.");
+		}
+		this.lights[i]["position w"] = this.reader.getFloat(position, 'w',false);
+		if(this.lights[i]["position x"] == null){
+			console.log("position x attribute missing.");
+		}
+
+		var ambient = this.reader.getElementsByTagName('ambient');
+		this.lights[i]["ambient r"] = this.reader.getFloat(ambient, 'r', false);
+		if(this.lights[i]["ambient r"] == null){
+			console.log("ambient r attribute missing.");
+		}
+		this.lights[i]["ambient g"] = this.reader.getFloat(ambient, 'g', false);
+		if(this.lights[i]["ambient g"] == null){
+			console.log("ambient g attribute missing.");
+		}
+		this.lights[i]["ambient b"] = this.reader.getFloat(ambient, 'b', false);
+		if(this.lights[i]["ambient b"] == null){
+			console.log("ambient b attribute missing.");
+		}
+		this.lights[i]["ambient a"] = this.reader.getFloat(ambient, 'a', false);
+		if(this.lights[i]["ambient a"] == null){
+			console.log("ambient a attribute missing.");
+		}
+	
+		var diffuse = this.reader.getElementsByTagName('diffuse');
+		this.lights[i]["diffuse r"] = this.reader.getFloat(diffuse, 'r', false);
+		if(this.lights[i]["diffuse r"] == null){
+			console.log("diffuse r attribute missing.");
+		}
+		this.lights[i]["diffuse g"] = this.reader.getFloat(diffuse, 'g', false);
+		if(this.lights[i]["diffuse g"] == null){
+			console.log("diffuse g attribute missing.");
+		}
+		this.lights[i]["diffuse b"] = this.reader.getFloat(diffuse, 'b', false);
+		if(this.lights[i]["diffuse b"] == null){
+			console.log("diffuse b attribute missing.");
+		}
+		this.lights[i]["diffuse a"] = this.reader.getFloat(diffuse, 'a', false);
+		if(this.lights[i]["diffuse a"] == null){
+			console.log("diffuse a attribute missing.");
+		}
+
+		var specular = this.reader.getElementsByTagName('specular');
+		this.lights[i]["specular r"] = this.reader.getFloat(specular, 'r', false);
+		if(this.lights[i]["specular r"] == null){
+			console.log("specular r attribute missing.");
+		}
+		this.lights[i]["specular g"] = this.reader.getFloat(specular, 'g', false);
+		if(this.lights[i]["specular g"] == null){
+			console.log("specular g attribute missing.");
+		}
+		this.lights[i]["specular b"] = this.reader.getFloat(specular, 'b', false);
+		if(this.lights[i]["specular b"] == null){
+			console.log("specular b attribute missing.");
+		}
+		this.lights[i]["specular a"] = this.reader.getFloat(specular, 'a', false);
+		if(this.lights[i]["specular a"] == null){
+			console.log("specular a attribute missing.");
+		}
 	}
 
 }

@@ -1,0 +1,136 @@
+front face = CCW
+depth func = LEQUAL, enable
+cull face  = back, enable
+lighting   = enable
+shading    = Gouraud
+polygon mode = fill
+
+
+<SCENE>
+
+<INITIALS>
+    <frustum near="0" far="100"/>                      <!-- frustum planes-->
+    <translate x="0" y="0" z="0" />                    <!-- initial translate -->
+    <rotation axis="x" angle="0" />                    <!-- initial rotation 3 -->
+    <rotation axis="y" angle="0" />                    <!-- initial rotation 2 -->
+    <rotation axis="z" angle="0" />                    <!-- initial rotation 1 -->
+    <scale sx="0" sy="0" sz="0" />                     <!-- initial scaling -->
+    <reference length="10" />                          <!-- axis length; "0" means no axis-->
+</INITIALS>
+
+
+<ILLUMINATION>
+    <ambient r="0" g="0" b="0" a="1" />            <!-- global ambient -->
+    <background r="0" g="0" b="0" a="1" />         <!-- background color -->
+</ILLUMINATION>
+
+
+<LIGHTS>
+    <LIGHT id="0">                                    <!-- light identifier -->
+        <enable value ="1" />                         <!-- enable/disable -->
+        <position x="5" y="5" z="15" w="1" />         <!-- light position -->
+        <ambient r="255" g="176" b="0" a="1" />       <!-- ambient component -->
+        <diffuse r="0" g="0" b="0" a="1" />           <!-- diffuse component -->
+        <specular r="0" g="0" b="0" a="1" />          <!-- specular component -->
+    </LIGHT>
+
+    <LIGHT id="1">                                    <!-- light identifier -->
+        <enable value ="1" />                         <!-- enable/disable -->
+        <position x="10" y="5" z="15" w="1" />        <!-- light position -->
+        <ambient r="0" g="117" b="255" a="1" />       <!-- ambient component -->
+        <diffuse r="127" g="127" b="127" a="1" />           <!-- diffuse component -->
+        <specular r="0" g="0" b="0" a="0" />          <!-- specular component -->
+    </LIGHT>
+
+    <LIGHT id="2">                                    <!-- light identifier -->
+        <enable value ="2" />                         <!-- enable/disable -->
+        <position x="0" y="0" z="0" w="1" />        <!-- light position -->
+        <ambient r="0" g="0" b="0" a="0" />           <!-- ambient component -->
+        <diffuse r="0" g="0" b="0" a="1" />           <!-- diffuse component -->
+        <specular r="0" g="0" b="0" a="1" />          <!-- specular component -->
+    </LIGHT>
+    <!-- NOTE: this block "LIGHT" must be repeated as necessary with different "id" -->
+    
+</LIGHTS>
+
+
+<TEXTURES>
+    <TEXTURE id="0">
+        <file path="C:\Users\Edgar\Documents\Faculdade\3ºAno\1ºSemestre\LAIG\Práticas\TP1\campo_futsal.png" />                             <!-- path to file -->
+        <amplif_factor s="4" t="2" />                <!-- x/s, y/t -->
+    </TEXTURE>
+
+    <TEXTURE id="1">
+        <file path="C:\Users\Edgar\Documents\Faculdade\3ºAno\1ºSemestre\LAIG\Práticas\TP1\baliza.png" />                             <!-- path to file -->
+        <amplif_factor s="0.5" t="0.5" />                <!-- x/s, y/t -->
+    </TEXTURE>
+
+    <!-- NOTE: this block "TEXTURE" must be repeated as necessary with different "id" -->
+    
+</TEXTURES>
+
+
+<MATERIALS>
+    <MATERIAL id="0">                                  
+        <shininess value="ff" />
+        <specular r="ff" g="ff" b="ff" a="ff" />        <!-- specular reflection -->
+        <diffuse r="ff" g="ff" b="ff" a="ff" />         <!-- diffuse reflection -->
+        <ambient r="ff" g="ff" b="ff" a="ff" />         <!-- ambient reflection -->
+        <emission r="ff" g="ff" b="ff" a="ff" />        <!-- emission component -->
+    </MATERIAL>
+
+    <!-- NOTE: the "MATERIAL" block may be repeated as required. Each defined material requires a distinct "id" -->
+
+</MATERIALS>
+
+
+<LEAVES>
+
+    <!-- next lines define nodes of type leaf; they may be repeated, in any order, as necessary -->
+    <LEAF id="0" type="rectangle" args="0 0 4 2" />
+    <LEAF id="1" type="cylinder" args="2 1 1 4 1" /> 
+    <LEAF id="2" type="sphere" args="2 4 1" />
+    <LEAF id="3" type="triangle" args="0 0 0 2 2 0 4 0 0" />
+
+    <!-- Parameters of the above primitives:                                                         -->
+        <!--rectangle: 2D coordinates for left-top and right-bottom vertices.                        -->
+        <!-- cylinder:  height, bottom radius, top radius, sections along height, parts per section  -->
+        <!-- sphere:    radius, parts along radius, parts per section                                -->
+        <!-- triangle:   coordinates of each vertex                                                  -->
+
+</LEAVES>
+
+
+<NODES>
+
+    <ROOT id="ss" />     <!-- identifier of root node of the scene graph; this node     -->
+                         <!--   must be defined in one of the following NODE declarations -->
+
+    <NODE id="ss">       <!--   defines one intermediate node; may be repeated as necessary -->
+
+        <!-- next two lines are mandatory -->
+        <MATERIAL id="ss" />      <!-- declared material superimposes the material received from parent node -->
+                                  <!-- id="null" maintains material from parent node        -->
+        <TEXTURE id="ss" />       <!-- declared texture superimposes the texture received from parent node -->
+                                  <!-- id="null" maintains texture from parent node       -->
+                                  <!-- id="clear" clears texture declaration received from parent node      -->
+
+
+        <!-- geom. transf. are optional and may be repeated, in any order, as necessary -->
+        <TRANSLATION x="ff" y="ff" z="ff" />
+        <ROTATION axis="cc" angle="ff" />
+        <SCALE sx="ff" sy="ff" sz="ff" />
+
+
+        <!-- declaring descendents, ate least one node or one leaf must be present -->
+        <DESCENDANTS>
+            <DESCENDANT id="ss" />       <!-- "ss" is the identifier of a node or of leaf; -->
+                                         <!-- may be repeatad as necessary. It can refer an -->
+                                         <!-- identifier of another node or leaf, later defined in the lsx file. -->
+        </DESCENDANTS>
+
+    </NODE>
+
+</NODES>
+
+</SCENE>

@@ -55,12 +55,12 @@ polygon mode = fill
 
 
 <TEXTURES>
-    <TEXTURE id="0">
+    <TEXTURE id="campo_futsal">
         <file path="C:\Users\Edgar\Documents\Faculdade\3ºAno\1ºSemestre\LAIG\Práticas\TP1\campo_futsal.png" />                             <!-- path to file -->
         <amplif_factor s="4" t="2" />                <!-- x/s, y/t -->
     </TEXTURE>
 
-    <TEXTURE id="1">
+    <TEXTURE id="baliza">
         <file path="C:\Users\Edgar\Documents\Faculdade\3ºAno\1ºSemestre\LAIG\Práticas\TP1\baliza.png" />                             <!-- path to file -->
         <amplif_factor s="0.5" t="0.5" />                <!-- x/s, y/t -->
     </TEXTURE>
@@ -72,11 +72,11 @@ polygon mode = fill
 
 <MATERIALS>
     <MATERIAL id="0">                                  
-        <shininess value="ff" />
-        <specular r="ff" g="ff" b="ff" a="ff" />        <!-- specular reflection -->
-        <diffuse r="ff" g="ff" b="ff" a="ff" />         <!-- diffuse reflection -->
-        <ambient r="ff" g="ff" b="ff" a="ff" />         <!-- ambient reflection -->
-        <emission r="ff" g="ff" b="ff" a="ff" />        <!-- emission component -->
+        <shininess value="10.0" />
+        <specular r="0.5" g="0.5" b="0.5" a="1.0" />        <!-- specular reflection -->
+        <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />         <!-- diffuse reflection -->
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />         <!-- ambient reflection -->
+        <emission r="0.0" g="0.0" b="0.0" a="1.0" />        <!-- emission component -->
     </MATERIAL>
 
     <!-- NOTE: the "MATERIAL" block may be repeated as required. Each defined material requires a distinct "id" -->
@@ -87,11 +87,12 @@ polygon mode = fill
 <LEAVES>
 
     <!-- next lines define nodes of type leaf; they may be repeated, in any order, as necessary -->
-    <LEAF id="0" type="rectangle" args="-0.5 -0.5 0.5 0.5" />
-    <LEAF id="1" type="cylinder" args="1.0 0.5 0.5 1.0 30" /> 
-    <LEAF id="2" type="sphere" args="0.5 1.0 30" />
-    <LEAF id="3" type="triangle" args="-0.5 -0.5 0.0 -0.5 0.5 0.0 0.5 0.0 0.0" />
+    <LEAF id="retangulo" type="rectangle" args="-0.5 -0.5 0.5 0.5" />
+    <LEAF id="cilindro" type="cylinder" args="1.0 0.5 0.5 1.0 30" /> 
+    <LEAF id="esfera" type="sphere" args="0.5 1.0 30" />
+    <LEAF id="triangulo" type="triangle" args="-0.5 -0.5 0.0 -0.5 0.5 0.0 0.5 0.0 0.0" />
 
+	
     <!-- Parameters of the above primitives:                                                         -->
         <!--rectangle: 2D coordinates for left-top and right-bottom vertices.                        -->
         <!-- cylinder:  height, bottom radius, top radius, sections along height, parts per section  -->
@@ -103,15 +104,15 @@ polygon mode = fill
 
 <NODES>
 
-    <ROOT id="0" />     <!-- identifier of root node of the scene graph; this node     -->
+    <ROOT id="campo" />     <!-- identifier of root node of the scene graph; this node     -->
                          <!--   must be defined in one of the following NODE declarations -->
 
-    <NODE id="1">       <!--   defines one intermediate node; may be repeated as necessary -->
+    <NODE id="campo">       <!--   defines one intermediate node; may be repeated as necessary -->
 
         <!-- next two lines are mandatory -->
         <MATERIAL id="0" />      <!-- declared material superimposes the material received from parent node -->
                                   <!-- id="null" maintains material from parent node        -->
-        <TEXTURE id="0" />       <!-- declared texture superimposes the texture received from parent node -->
+        <TEXTURE id="clear" />       <!-- declared texture superimposes the texture received from parent node -->
                                   <!-- id="null" maintains texture from parent node       -->
                                   <!-- id="clear" clears texture declaration received from parent node      -->
 
@@ -124,7 +125,9 @@ polygon mode = fill
 
         <!-- declaring descendents, ate least one node or one leaf must be present -->
         <DESCENDANTS>
-            <DESCENDANT id="0" />       <!-- "ss" is the identifier of a node or of leaf; -->
+            <DESCENDANT id="baliza" />
+            <DESCENDANT id="chao" />
+            <DESCENDANT id="baliza" />   <!-- "ss" is the identifier of a node or of leaf; -->
                                          <!-- may be repeatad as necessary. It can refer an -->
                                          <!-- identifier of another node or leaf, later defined in the lsx file. -->
         </DESCENDANTS>

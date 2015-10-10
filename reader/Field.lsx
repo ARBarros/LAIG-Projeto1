@@ -274,12 +274,6 @@ polygon mode = fill
     
     
     
-    
-    
-    
-    
-    
-    
     <!-- Poste 1.1 -->
     
     <NODE>
@@ -311,14 +305,6 @@ polygon mode = fill
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
     <!-- Poste 1.2 -->
     
     <NODE>
@@ -346,15 +332,6 @@ polygon mode = fill
         </DESCENDANTS>
 
     </NODE>
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
@@ -538,12 +515,6 @@ polygon mode = fill
     
     
     
-    
-    
-    
-    
-    
-    
     <!-- Poste 2.2 -->
     
     <NODE>
@@ -571,16 +542,6 @@ polygon mode = fill
         </DESCENDANTS>
 
     </NODE>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     

@@ -252,91 +252,102 @@ MySceneGraph.prototype.parseLights = function(rootElement){
 	}
 	
 
-	for(i=0; i< elems.length; i++){ //ciclo para guardar num array de arrays as informações de cada bloco de luzes
+	for(i=0; i< elems.length; i++){ 
 		var block = elems[i];
 		var light = this.reader.getElementsByTagName('LIGHT');
-		this.lights[i]["id"] = this.reader.getString(light, 'id', false);
-		if(this.lights[i]["id"] == null){
+		var id = this.reader.getString(light, 'id', false);
+		if(id == null){
 			console.log("LIGHT id attribute missing");
 		}
 
 		var enable = this.reader.getElementsByTagName('enable');
-		this.lights[i]["enable value"] = this.reader.getBoolean(enable, 'value',false);
-		if(this.lights[i]["enable value"] == null){
+		var enable_value = this.reader.getBoolean(enable, 'value',false);
+		if(enable_value == null){
 			console.log("enable value attribute missing.");
 		}
+
+		this.lights = [];
 		
 		var position = this.reader.getElementsByTagName('position');
-		this.lights[i]["position x"] = this.reader.getFloat(position, 'x',false);
-		if(this.lights[i]["position x"] == null){
+		var position_x = this.reader.getFloat(position, 'x',false);
+		if(position_x == null){
 			console.log("position x attribute missing.");
 		}
-		this.lights[i]["position y"] = this.reader.getFloat(position, 'y',false);
-		if(this.lights[i]["position x"] == null){
-			console.log("position x attribute missing.");
+		var position_y = this.reader.getFloat(position, 'y',false);
+		if(position_y == null){
+			console.log("position y attribute missing.");
 		}
-		this.lights[i]["position z"] = this.reader.getFloat(position, 'z',false);
-		if(this.lights[i]["position x"] == null){
-			console.log("position x attribute missing.");
+		var position_z = this.reader.getFloat(position, 'z',false);
+		if(position_z == null){
+			console.log("position z attribute missing.");
 		}
-		this.lights[i]["position w"] = this.reader.getFloat(position, 'w',false);
-		if(this.lights[i]["position x"] == null){
-			console.log("position x attribute missing.");
+		var position_w = this.reader.getFloat(position, 'w',false);
+		if(position_w == null){
+			console.log("position w attribute missing.");
 		}
 
 		var ambient = this.reader.getElementsByTagName('ambient');
-		this.lights[i]["ambient r"] = this.reader.getFloat(ambient, 'r', false);
-		if(this.lights[i]["ambient r"] == null){
+		var ambient_r = this.reader.getFloat(ambient, 'r', false);
+		if(ambient_r == null){
 			console.log("ambient r attribute missing.");
 		}
-		this.lights[i]["ambient g"] = this.reader.getFloat(ambient, 'g', false);
-		if(this.lights[i]["ambient g"] == null){
+		var ambient_g = this.reader.getFloat(ambient, 'g', false);
+		if(ambient_g == null){
 			console.log("ambient g attribute missing.");
 		}
-		this.lights[i]["ambient b"] = this.reader.getFloat(ambient, 'b', false);
-		if(this.lights[i]["ambient b"] == null){
+		var ambient_b = this.reader.getFloat(ambient, 'b', false);
+		if(ambient_b == null){
 			console.log("ambient b attribute missing.");
 		}
-		this.lights[i]["ambient a"] = this.reader.getFloat(ambient, 'a', false);
-		if(this.lights[i]["ambient a"] == null){
+		var ambient_a = this.reader.getFloat(ambient, 'a', false);
+		if(ambient_a == null){
 			console.log("ambient a attribute missing.");
 		}
 	
 		var diffuse = this.reader.getElementsByTagName('diffuse');
-		this.lights[i]["diffuse r"] = this.reader.getFloat(diffuse, 'r', false);
-		if(this.lights[i]["diffuse r"] == null){
+		var diffuse_r = this.reader.getFloat(diffuse, 'r', false);
+		if(diffuse_r == null){
 			console.log("diffuse r attribute missing.");
 		}
-		this.lights[i]["diffuse g"] = this.reader.getFloat(diffuse, 'g', false);
-		if(this.lights[i]["diffuse g"] == null){
+		var diffuse_g = this.reader.getFloat(diffuse, 'g', false);
+		if(diffuse_g == null){
 			console.log("diffuse g attribute missing.");
 		}
-		this.lights[i]["diffuse b"] = this.reader.getFloat(diffuse, 'b', false);
-		if(this.lights[i]["diffuse b"] == null){
+		var diffuse_b = this.reader.getFloat(diffuse, 'b', false);
+		if(diffuse_b == null){
 			console.log("diffuse b attribute missing.");
 		}
-		this.lights[i]["diffuse a"] = this.reader.getFloat(diffuse, 'a', false);
-		if(this.lights[i]["diffuse a"] == null){
+		var diffuse_a = this.reader.getFloat(diffuse, 'a', false);
+		if(diffuse_a == null){
 			console.log("diffuse a attribute missing.");
 		}
 
+		
 		var specular = this.reader.getElementsByTagName('specular');
-		this.lights[i]["specular r"] = this.reader.getFloat(specular, 'r', false);
-		if(this.lights[i]["specular r"] == null){
+		var specular_r = this.reader.getFloat(specular, 'r', false);
+		if(specular_r == null){
 			console.log("specular r attribute missing.");
 		}
-		this.lights[i]["specular g"] = this.reader.getFloat(specular, 'g', false);
-		if(this.lights[i]["specular g"] == null){
+		var specular_g = this.reader.getFloat(specular, 'g', false);
+		if(specular_g == null){
 			console.log("specular g attribute missing.");
 		}
-		this.lights[i]["specular b"] = this.reader.getFloat(specular, 'b', false);
-		if(this.lights[i]["specular b"] == null){
+		var specular_b = this.reader.getFloat(specular, 'b', false);
+		if(specular_b == null){
 			console.log("specular b attribute missing.");
 		}
-		this.lights[i]["specular a"] = this.reader.getFloat(specular, 'a', false);
-		if(this.lights[i]["specular a"] == null){
+		var specular_a = this.reader.getFloat(specular, 'a', false);
+		if(specular_a == null){
 			console.log("specular a attribute missing.");
 		}
+
+		this.light_obj = new CGFlight(this.scene, id);
+		this.light_obj.setAmbient(ambient_r, ambient_g, ambient_b, ambient_a);
+		this.light_obj.setDiffuse(diffuse_r, diffuse_g, diffuse_b, diffuse_a);
+		this.light_obj.setSpecular(specular_r, specular_g, specular_b, specular_a);
+		this.light_obj.setPosition(position_x, position_y, position_z, position_w);
+
+		this.lights[id] = this.light_obj;
 	}
 
 }
@@ -351,28 +362,33 @@ MySceneGraph.prototype.parseTextures = function(rootElement){
 		return "either zero or more than one 'TEXTURES' element found.";
 	}
 
+	this.textures = [];
+
 	for(i=0; i<elems.length; i++){
 		var textura = this.reader.getElementsByTagName('TEXTURE');
-		this.texturas[i]["id"] = this.reader.getString(textura, 'id',false);
-		if(this.texturas["id"] == null){
+		var id = this.reader.getString(textura, 'id',false);
+		if(id == null){
 			console.log("TEXTURA id attribute missing");
 		}
 
 		var file = this.reader.getElementsByTagName('file');
-		this.texturas[i]["file path"] = this.reader.getString(file, 'path',false);
-		if(this.texturas[i]["file path"] == null){
+		var file_path = this.reader.getString(file, 'path',false);
+		if(file_path == null){
 			console.log("file path attribute missing.");
 		}
 
 		var amplif_factor = this.reader.getElementsByTagName('amplif_factor');
-		this.texturas[i]["amplif_factor s"] = this.reader.getFloat(amplif_factor, 's', false);
-		if(this.texturas[i]["amplif_factor s"] == null){
+		var amplif_factor_s = this.reader.getFloat(amplif_factor, 's', false);
+		if(amplif_factor_s == null){
 			console.log("amplif_factor s attribute missing.");
 		}
-		this.texturas[i]["amplif_factor t"] = this.reader.getFloat(amplif_factor, 't', false);
-		if(this.texturas[i]["amplif_factor t"] == null){
+		var amplif_factor_t = this.reader.getFloat(amplif_factor, 't', false);
+		if(amplif_factor_t == null){
 			console.log("amplif_factor t attribute missing.");
 		}
+
+		this.texture_obj = new CGFtexture(this.scene, file_path);
+		this.textures[id] = this.texture_obj;
 	}
 }
 
@@ -386,88 +402,99 @@ MySceneGraph.prototype.parseMaterials = function(rootElement){
 		return "either zero or more than one 'MATERIALS' element found.";
 	}
 
+	this.materials = [];
+
 	for(i=0; i<elems.size(); i++){
 		var material = this.reader.getElementsByTagName('MATERIALS');
-		this.materials[i]["id"] = this.reader.getString(material, 'id', false);
-		if(this.materials[i]["id"] == null){
+		var id = this.reader.getString(material, 'id', false);
+		if(id == null){
 			console.log("MATERIAL id attribute missing.");
 		}
 
 		var shininess = this.reader.getElementsByTagName('shininess');
-		this.materials[i]["shininess value"] = this.reader.getFloat(shininess, 'value, false');
+		var shininess_value = this.reader.getFloat(shininess, 'value, false');
 
 		var specular = this.reader.getElementsByTagName('specular');
-		this.materials[i]["specular r"] = this.reader.getFloat(specular, 'r', false);
-		if(this.materials[i]["specular r"] == null){
+		var specular_r = this.reader.getFloat(specular, 'r', false);
+		if(specular_r == null){
 			console.log("specular r attribute missing.");
 		}
-		this.materials[i]["specular g"] = this.reader.getFloat(specular, 'g', false);
-		if(this.materials[i]["specular g"] == null){
+		var specular_g = this.reader.getFloat(specular, 'g', false);
+		if(specular_g == null){
 			console.log("specular g attribute missing.");
 		}
-		this.materials[i]["specular b"] = this.reader.getFloat(specular, 'b', false);
-		if(this.materials[i]["specular b"] == null){
+		var specular_b = this.reader.getFloat(specular, 'b', false);
+		if(specular_b == null){
 			console.log("specular b attribute missing.");
 		}
-		this.materials[i]["specular a"] = this.reader.getFloat(specular, 'a', false);
-		if(this.materials[i]["specular a"] == null){
+		var specular_a = this.reader.getFloat(specular, 'a', false);
+		if(specular_a == null){
 			console.log("specular a attribute missing.");
 		}
 
 		var diffuse = this.reader.getElementsByTagName('diffuse');
-		this.materials[i]["diffuse r"] = this.reader.getFloat(diffuse, 'r', false);
-		if(this.materials[i]["diffuse r"] == null){
+		var diffuse_r = this.reader.getFloat(diffuse, 'r', false);
+		if(diffuse_r == null){
 			console.log("diffuse r attribute missing.");
 		}
-		this.materials[i]["diffuse g"] = this.reader.getFloat(diffuse, 'g', false);
-		if(this.materials[i]["diffuse g"] == null){
+		var diffuse_g = this.reader.getFloat(diffuse, 'g', false);
+		if(diffuse_g == null){
 			console.log("diffuse g attribute missing.");
 		}
-		this.materials[i]["diffuse b"] = this.reader.getFloat(diffuse, 'b', false);
-		if(this.materials[i]["diffuse b"] == null){
+		var diffuse_b = this.reader.getFloat(diffuse, 'b', false);
+		if(diffuse_b == null){
 			console.log("diffuse b attribute missing.");
 		}
-		this.materials[i]["diffuse a"] = this.reader.getFloat(diffuse, 'a', false);
-		if(this.materials[i]["diffuse a"] == null){
+		var diffuse_a = this.reader.getFloat(diffuse, 'a', false);
+		if(diffuse_a == null){
 			console.log("diffuse a attribute missing.");
 		}
 
 		var ambient = this.reader.getElementsByTagName('ambient');
-		this.materials[i]["ambient r"] = this.reader.getFloat(ambient, 'r', false);
-		if(this.materials[i]["ambient r"] == null){
+		var ambient_r = this.reader.getFloat(ambient, 'r', false);
+		if(ambient_r == null){
 			console.log("ambient r attribute missing.");
 		}
-		this.materials[i]["ambient g"] = this.reader.getFloat(ambient, 'g', false);
-		if(this.materials[i]["ambient g"] == null){
+		var ambient_g = this.reader.getFloat(ambient, 'g', false);
+		if(ambient_g == null){
 			console.log("ambient g attribute missing.");
 		}
-		this.materials[i]["ambient b"] = this.reader.getFloat(ambient, 'b', false);
-		if(this.materials[i]["ambient b"] == null){
+		var ambient_b = this.reader.getFloat(ambient, 'b', false);
+		if(ambient_b == null){
 			console.log("ambient b attribute missing.");
 		}
-		this.materials[i]["ambient a"] = this.reader.getFloat(ambient, 'a', false);
-		if(this.materials[i]["ambient a"] == null){
+		var ambient_a = this.reader.getFloat(ambient, 'a', false);
+		if(ambient_a == null){
 			console.log("ambient a attribute missing.");
 		}
 
 
 		var emission = this.reader.getElementsByTagName('emission');
-		this.materials[i]["emission r"] = this.reader.getFloat(emission, 'r', false);
-		if(this.materials[i]["emission r"] == null){
+		var emission_r = this.reader.getFloat(emission, 'r', false);
+		if(emission_r == null){
 			console.log("emission r attribute missing.");
 		}
-		this.materials[i]["emission g"] = this.reader.getFloat(emission, 'g', false);
-		if(this.materials[i]["emission g"] == null){
+		var emission_g = this.reader.getFloat(emission, 'g', false);
+		if(emission_g == null){
 			console.log("emission g attribute missing.");
 		}
-		this.materials[i]["emission b"] = this.reader.getFloat(emission, 'b', false);
-		if(this.materials[i]["emission b"] == null){
+		var emission_b = this.reader.getFloat(emission, 'b', false);
+		if(emission_b == null){
 			console.log("emission b attribute missing.");
 		}
-		this.materials[i]["emission a"] = this.reader.getFloat(emission, 'a', false);
-		if(this.materials[i]["emission a"] == null){
+		var emission_a = this.reader.getFloat(emission, 'a', false);
+		if(emission_a == null){
 			console.log("emission a attribute missing.");
 		}
+
+		this.material_obj = new CGFappearance(this.scene);
+		this.material_obj.setAmbient(ambient_r, ambient_g, ambient_b, ambient_a);
+		this.material_obj.setDiffuse(diffuse_r, diffuse_g, diffuse_b, diffuse_a);
+		this.material_obj.setSpecular(specular_r, specular_g, specular_b, specular_a);
+		this.material_obj.setShininess(shininess_value);
+		this.material_obj.setEmission(emission_r, emission_g, emission_b, emission_a);
+
+		this.materials[id] = this.material_obj;
 	}
 }
 

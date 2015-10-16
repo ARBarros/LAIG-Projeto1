@@ -1,7 +1,15 @@
 
 function MySceneGraph(filename, scene) {
 	this.loadedOk = null;
-	
+
+	this.initials = [];
+	this.illumination = [];
+	this.lights = [];
+	this.textures = [];
+	this.materials = [];
+	this.leaves = [];
+	this.nodes = [];
+	this.graph_nodes = [];
 	// Establish bidirectional references between scene and graph
 	this.scene = scene;
 	scene.graph=this;
@@ -28,7 +36,8 @@ MySceneGraph.prototype.onXMLReady=function()
 	
 	// Here should go the calls for different functions to parse the various blocks
 	//var error = this.parseGlobalsExample(rootElement);
-	var error=this.parseNodes(rootElement);	
+	var error=this.parseNodes(rootElement);
+	this.createNodes();
 
 
 	if (error != null) {
@@ -100,7 +109,7 @@ MySceneGraph.prototype.parseInitials = function(rootElement) {
 	}
 	
 	//var block = elems[0];
-	this.initials = [];
+	
 
 	var frustum = elems[0].getElementsByTagName('frustum');
 	if (frustum == null) {
@@ -205,7 +214,7 @@ MySceneGraph.prototype.parseIllumination = function(rootElement){
 		return "either zero or more than one 'ILLUMINATION' element found.";
 	}
 
-	this.illumination = [];
+	
 
 	var ambient = elems[0].getElementsByTagName('ambient');
 	if(ambient == null){
@@ -264,7 +273,7 @@ MySceneGraph.prototype.parseLights = function(rootElement){
 	if (elems.length != 1) {
 		return "either zero or more than one 'LIGHTS' element found.";
 	}
-	this.lights = [];
+	
 	var block = elems[0];
 	var light = block.getElementsByTagName('LIGHT');
 	
@@ -377,7 +386,7 @@ MySceneGraph.prototype.parseTextures = function(rootElement){
 		return "either zero or more than one 'TEXTURES' element found.";
 	}
 
-	this.textures = [];
+	
 	var textura = elems[0].getElementsByTagName('TEXTURE');
 
 	for(i=0; i<textura.length; i++){
@@ -415,7 +424,7 @@ MySceneGraph.prototype.parseMaterials = function(rootElement){
 	}
 	var material = elems[0].getElementsByTagName('MATERIAL');
 
-	this.materials = [];
+	
 	console.log(material.length);
 
 	for(i=0; i<material.length; i++){
@@ -525,7 +534,7 @@ MySceneGraph.prototype.parseLeaves = function(rootElement){
 	}
 	var leaf  = elems[0].getElementsByTagName('LEAF');
 
-	this.leaves = [];
+	
 
 	for(var i =0; i<leaf.length; i++){
 		var id = this.reader.getString(leaf[i], 'id', false);
@@ -582,7 +591,7 @@ MySceneGraph.prototype.parseLeaves = function(rootElement){
 				var v3y = args[7];
 				var v3z = args[8];
 
-				this.leaves[id] = new Triangle(this.scene, v1x, v1y, v1z, v2x, v2y, v2z, v3x, v3y, v3z);
+				this.leaves[id] = new Node(this.scene, id, new Triangle(this.scene, v1x, v1y, v1z, v2x, v2y, v2z, v3x, v3y, v3z) );
 				break;
 
 
@@ -603,7 +612,7 @@ MySceneGraph.prototype.parseNodes = function(rootElement){
 		return "either zero or more than one 'LEAVES' element found.";
 	}
 
-	this.nodes = [];
+	
 
 	var node = elems[0].getElementsByTagName('NODE');
 	this.rootNode = this.reader.getString(node[0], 'id', false);
@@ -624,27 +633,33 @@ MySceneGraph.prototype.parseNodes = function(rootElement){
 		for(var j=0; j< trans_list.length; j++){
 			var transform =[];
 			var type = trans_list[j].nodeName;
-			transform["type"] = type;
+			
 			
 			switch(type){
 				case 'TRANSLATION':
+					transform["type"] = type;
 					transform["translation_x"] = this.reader.getFloat(trans_list[j], 'x', false);
 					transform["translation_y"] = this.reader.getFloat(trans_list[j], 'y', false);
 					transform["translation_z"] = this.reader.getFloat(trans_list[j], 'z', false);
+					transforms.push(transform);
 					break;
 				case 'ROTATION':
+					transform["type"] = type;
 					transform["axis"] = this.reader.getItem(trans_list[j], 'axis', ["x", "y", "z"]);
 					transform["angle"] = this.reader.getFloat(trans_list[j], 'angle', false);
+					transforms.push(transform);
 					break;
 				case ' SCALE':
+					transform["type"] = type;
 					transform["scale_x"] = this.reader.getFloat(trans_list[j], 'sx', false);
 					transform["scale_y"] = this.reader.getFloat(trans_list[j], 'sy', false);
 					transform["scale_z"] = this.reader.getFloat(trans_list[j], 'sz', false);
+					transforms.push(transform);
 					break;
 			}
 
 
-			transforms.push(transform);
+			
 
 			
 		
@@ -669,9 +684,28 @@ MySceneGraph.prototype.parseNodes = function(rootElement){
 			new_node["transfomations"] = transforms;
 			new_node["descendants"] = descendants;
 
-			console.log(new_node);
+			
+
+			this.nodes[node_id] = new_node;
 
 	}
+}
+
+MySceneGraph.prototype.createNodes = function(){
+	for(var i in this.nodes){
+		var node = this.nodes[i];
+		this.graph_nodes[i] = new SceneNode(this.scene, i , node["material"], node["texture"], node["transfomations"]);
+	}
+
+	for(var i in this.nodes){
+		for(var j in this.nodes[i]["descendants"]){
+			if(this.graph_nodes[this.nodes[i]["descendants"][j]] != undefined)
+			this.graph_nodes[i].add_descendant(this.graph_nodes[this.nodes[i]["descendants"][j]]);
+		}
+		console.log(this.graph_nodes[i]);
+		console.log(this.graph_nodes[i]["descendants"]);
+	}
+
 }
 
 

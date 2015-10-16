@@ -526,10 +526,8 @@ MySceneGraph.prototype.parseLeaves = function(rootElement){
 	var leaf  = elems[0].getElementsByTagName('LEAF');
 
 	this.leaves = [];
-	console.log(leaf.length);
 
 	for(var i =0; i<leaf.length; i++){
-		console.log(i);
 		var id = this.reader.getString(leaf[i], 'id', false);
 		if(id == null){
 			console.log("LEAF id attribute missing.");

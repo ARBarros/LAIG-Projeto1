@@ -28,7 +28,7 @@ MySceneGraph.prototype.onXMLReady=function()
 	
 	// Here should go the calls for different functions to parse the various blocks
 	//var error = this.parseGlobalsExample(rootElement);
-	var error=this.parseLeaves(rootElement);	
+	var error=this.parseNodes(rootElement);	
 
 
 	if (error != null) {
@@ -192,7 +192,6 @@ MySceneGraph.prototype.parseInitials = function(rootElement) {
 		console.log("length element is missing.");
 	}
 
-	console.log(this.initials);
 }
 
 
@@ -229,24 +228,27 @@ MySceneGraph.prototype.parseIllumination = function(rootElement){
 		console.log("ambient a attribute missing.");
 	}
 
-	var background = elems[0].getElementsByTagName('background');
-	if(background == null){
+	this.background = [];
+	
+	var back =  elems[0].getElementsByTagName('background');
+
+	if(back == null){
 		return "background element is missing.";
 	}
-	this.illumination["background r"] = this.reader.getFloat(background[0], 'r', false);
-	if(this.illumination["background r"] == null){
+	this.background[0] = this.reader.getFloat(back[0], 'r', false);
+	if(this.background[0] == null){
 		console.log("background r attribute missing.");
 	}
-	this.illumination["background g"] = this.reader.getFloat(background[0], 'g', false);
-	if(this.illumination["background g"] == null){
+	this.background[1] = this.reader.getFloat(back[0], 'g', false);
+	if(this.background[1] == null){
 		console.log("background g attribute missing.");
 	}
-	this.illumination["background b"] = this.reader.getFloat(background[0], 'b', false);
-	if(this.illumination["background b"] == null){
+	this.background[2] = this.reader.getFloat(back[0], 'b', false);
+	if(this.background[2] == null){
 		console.log("background b attribute missing.");
 	}
-	this.illumination["background a"] = this.reader.getFloat(background[0], 'a', false);
-	if(this.illumination["background a"] == null){
+	this.background[3] = this.reader.getFloat(back[0], 'a', false);
+	if(this.background[3] == null){
 		console.log("background a attribute missing.");
 	}
 
@@ -526,7 +528,7 @@ MySceneGraph.prototype.parseLeaves = function(rootElement){
 	this.leaves = [];
 	console.log(leaf.length);
 
-	for(i =0; i<leaf.length; i++){
+	for(var i =0; i<leaf.length; i++){
 		console.log(i);
 		var id = this.reader.getString(leaf[i], 'id', false);
 		if(id == null){
@@ -591,6 +593,87 @@ MySceneGraph.prototype.parseLeaves = function(rootElement){
 
 	}
 	console.log(this.leaves);
+}
+
+MySceneGraph.prototype.parseNodes = function(rootElement){
+	var elems = rootElement.getElementsByTagName('NODES');
+	if (elems == null) {
+		return "LEAVES element is missing.";
+	}
+
+	if (elems.length != 1) {
+		return "either zero or more than one 'LEAVES' element found.";
+	}
+
+	this.nodes = [];
+
+	var node = elems[0].getElementsByTagName('NODE');
+	this.rootNode = this.reader.getString(node[0], 'id', false);
+	
+	for(var i=0; i<node.length; i++){
+
+		var node_id = this.reader.getString(node[i], 'id', false);
+		
+		var material = node[i].getElementsByTagName('MATERIAL');
+		var material_id = this.reader.getString(material[0], 'id', false);
+
+		var texture = node[i].getElementsByTagName('TEXTURE');
+		var texture_id = this.reader.getString(texture[0], 'id', false);
+
+		var transforms = [];
+		var trans_list = node[i].childNodes;
+
+		for(var j=0; j< trans_list.length; j++){
+			var transform =[];
+			var type = trans_list[j].nodeName;
+			transform["type"] = type;
+			
+			switch(type){
+				case 'TRANSLATION':
+					transform["translation_x"] = this.reader.getFloat(trans_list[j], 'x', false);
+					transform["translation_y"] = this.reader.getFloat(trans_list[j], 'y', false);
+					transform["translation_z"] = this.reader.getFloat(trans_list[j], 'z', false);
+					break;
+				case 'ROTATION':
+					transform["axis"] = this.reader.getItem(trans_list[j], 'axis', ["x", "y", "z"]);
+					transform["angle"] = this.reader.getFloat(trans_list[j], 'angle', false);
+					break;
+				case ' SCALE':
+					transform["scale_x"] = this.reader.getFloat(trans_list[j], 'sx', false);
+					transform["scale_y"] = this.reader.getFloat(trans_list[j], 'sy', false);
+					transform["scale_z"] = this.reader.getFloat(trans_list[j], 'sz', false);
+					break;
+			}
+
+
+			transforms.push(transform);
+
+			
+		
+		}
+
+			descendants=[];
+
+			var descendant= node[i].getElementsByTagName('DESCENDANTS');
+
+			var desc = descendant[0].getElementsByTagName('DESCENDANT');
+
+
+			for(var j=0; j < desc.length; j++){
+				var desc_id = this.reader.getString(desc[j], 'id', false);
+				descendants.push(desc_id);
+			}
+
+
+			new_node = [];
+			new_node["material"] = material_id;
+			new_node["texture"] = texture_id;
+			new_node["transfomations"] = transforms;
+			new_node["descendants"] = descendants;
+
+			console.log(new_node);
+
+	}
 }
 
 

@@ -86,7 +86,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 
 XMLscene.prototype.processGraph = function(nodeId){
 	var material = null;
-
+	//console.log("cenas yay",  this.activeTexture, nodeId);
 	if(nodeId != null){
 		var node = this.graph.graph_nodes[nodeId];
 		
@@ -95,39 +95,46 @@ XMLscene.prototype.processGraph = function(nodeId){
 
 		//Aplica materiais
 		if(node.material != null){
-			material= node.material;
+			material = node.material;
 		}
-		console.log(material);
+		
+		var tex = this.activeTexture;
+		
 		if(material != null){
-			console.log("aplica material");
-			material.apply();
+			material.apply();  //limpa  textura atual
 		}
 
 		//Aplica as texturas
 		if(node.texture === "clear"){
 			if(this.activeTexture !== null){
 				this.activeTexture.unbind();
+				//console.log("unbind");
 			}
 		}else if(node.texture !== "null"){
+			//console.log("fazendo o real bind" + nodeId);
 			node.texture.bind();
 		}
-		if(this.activeTexture !== null){
-			this.activeTexture.bind();
+		if(node.texture === "null" && tex !== null){
+			tex.bind();
 		}
 
+		var current_texture = this.activeTexture;
+		console.log(current_texture, this.activeTexture, nodeId);
 
 		//percorre o grafo recursivamente
 		for(var i in node.descendants){
 			this.pushMatrix();
-			//material.apply();
+
 			this.processGraph(node.descendants[i].id);
+
+			if (this.activeTexture !== null) this.activeTexture.unbind();
+			if (current_texture !== null) current_texture.bind();
+			 
+
 			this.popMatrix();
 		}
 
-		if(material != null){
-			console.log("aplica material");
-			material.apply();
-		}
+		
 		
 		//display de primitivas se for uma folha
 		if(node.primitive != undefined){
@@ -166,7 +173,7 @@ XMLscene.prototype.display = function () {
 	if (this.loadedOK)
 	{
 		
-		this.processGraph(this.graph.root_node)
+		this.processGraph(this.graph.root_node);
 
 		for (var i = 0; i < this.lights.length; i++)
 		{

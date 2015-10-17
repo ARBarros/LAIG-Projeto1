@@ -1,7 +1,7 @@
 <SCENE>
 
 <INITIALS>
-    <frustum near="0" far="100"/>                      <!-- frustum planes-->
+    <frustum near="0.1" far="100"/>                      <!-- frustum planes-->
     <translation x="0" y="0" z="0" />                    <!-- initial translate -->
     <rotation axis="x" angle="0" />                    <!-- initial rotation 3 -->
     <rotation axis="y" angle="0" />                    <!-- initial rotation 2 -->
@@ -62,10 +62,10 @@
 <MATERIALS>
     <MATERIAL id="0">                                  
         <shininess value="10" />
-        <specular r="51.5" g="255" b="153" a="1" />        <!-- specular reflection -->
-        <diffuse r="51.5" g="255" b="153" a="1" />         <!-- diffuse reflection -->
-        <ambient r="51.5" g="255" b="153" a="1" />         <!-- ambient reflection -->
-        <emission r="1" g="1" b="1" a="1" />       		  <!-- emission component -->
+        <specular r="1" g="1" b="1" a="1" />        <!-- specular reflection -->
+        <diffuse r="1" g="1" b="1" a="1" />         <!-- diffuse reflection -->
+        <ambient r="1" g="1" b="1" a="1" />         <!-- ambient reflection -->
+        <emission r="0" g="0" b="0" a="1" />       		  <!-- emission component -->
     </MATERIAL>
 
     <!-- NOTE: the "MATERIAL" block may be repeated as required. Each defined material requires a distinct "id" -->

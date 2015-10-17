@@ -10,8 +10,11 @@ function Matrix(transforms){
     for(var i=0; i< transforms.length; i++){
         var transform = transforms[i];
 
-
+       
         var type = transform["type"];
+        
+        if(type == undefined)
+            continue;
 
         switch(type){
             case 'ROTATION':
@@ -38,8 +41,7 @@ function Matrix(transforms){
                 mat4.translate(this.matrix, this.matrix, trans_vector);
                 break;
             case 'SCALE':
-                var scale_vector = [transform["sx"], transform["sy"], transform["sz"]];
-
+                var scale_vector = [transform["scale_x"], transform["scale_y"], transform["scale_z"]];
                 mat4.scale(this.matrix, this.matrix, scale_vector);
                 break;
         }

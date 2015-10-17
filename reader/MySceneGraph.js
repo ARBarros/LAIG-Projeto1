@@ -10,6 +10,8 @@ function MySceneGraph(filename, scene) {
 	this.leaves = [];
 	this.nodes = [];
 	this.graph_nodes = [];
+	this.primitives = [];
+	this.root_node;
 	// Establish bidirectional references between scene and graph
 	this.scene = scene;
 	scene.graph=this;
@@ -36,7 +38,7 @@ MySceneGraph.prototype.onXMLReady=function()
 	
 	// Here should go the calls for different functions to parse the various blocks
 	//var error = this.parseGlobalsExample(rootElement);
-	var error=this.parseNodes(rootElement);
+	var error=this.parse(rootElement);
 	this.createNodes();
 
 
@@ -96,6 +98,16 @@ MySceneGraph.prototype.parseGlobalsExample= function(rootElement) {
 	};
 	
 };
+
+MySceneGraph.prototype.parse = function(rootElement){
+	this.parseInitials(rootElement);
+	this.parseIllumination(rootElement);
+	this.parseLights(rootElement);
+	this.parseTextures(rootElement);
+	this.parseMaterials(rootElement);
+	this.parseLeaves(rootElement);
+	this.parseNodes(rootElement);
+}
 
 
 MySceneGraph.prototype.parseInitials = function(rootElement) {
@@ -220,20 +232,20 @@ MySceneGraph.prototype.parseIllumination = function(rootElement){
 	if(ambient == null){
 		return "ambient element is missing.";
 	}
-	this.illumination["ambient r"] = this.reader.getFloat(ambient[0], 'r', false);
-	if(this.illumination["ambient r"] == null){
+	this.illumination["ambient_r"] = this.reader.getFloat(ambient[0], 'r', false);
+	if(this.illumination["ambient_r"] == null){
 		console.log("ambient r attribute missing.");
 	}
-	this.illumination["ambient g"] = this.reader.getFloat(ambient[0], 'g', false);
-	if(this.illumination["ambient g"] == null){
+	this.illumination["ambient_g"] = this.reader.getFloat(ambient[0], 'g', false);
+	if(this.illumination["ambient_g"] == null){
 		console.log("ambient g attribute missing.");
 	}
-	this.illumination["ambient b"] = this.reader.getFloat(ambient[0], 'b', false);
-	if(this.illumination["ambient b"] == null){
+	this.illumination["ambient_b"] = this.reader.getFloat(ambient[0], 'b', false);
+	if(this.illumination["ambient_b"] == null){
 		console.log("ambient b attribute missing.");
 	}
-	this.illumination["ambient a"] = this.reader.getFloat(ambient[0], 'a', false);
-	if(this.illumination["ambient a"] == null){
+	this.illumination["ambient_a"] = this.reader.getFloat(ambient[0], 'a', false);
+	if(this.illumination["ambient_a"] == null){
 		console.log("ambient a attribute missing.");
 	}
 
@@ -275,103 +287,99 @@ MySceneGraph.prototype.parseLights = function(rootElement){
 	}
 	
 	var block = elems[0];
-	var light = block.getElementsByTagName('LIGHT');
+	var light_block = block.getElementsByTagName('LIGHT');
 	
-	for(i=0; i< light.length; i++){ 
+	for(i=0; i< light_block.length; i++){
+
+		var light = []; 
 		
-		var id = this.reader.getString(light[i], 'id', false);
-		if(id == null){
+		light["id"] = this.reader.getString(light_block[i], 'id', false);
+		if(light["id"] == null){
 			console.log("LIGHT id attribute missing");
 		}
 
-		var enable = light[i].getElementsByTagName('enable');
-		var enable_value = this.reader.getBoolean(enable[0], 'value',false);
-		if(enable_value == null){
+		var enable = light_block[i].getElementsByTagName('enable');
+		light["enable_value"] = this.reader.getBoolean(enable[0], 'value',false);
+		if(light["enable_value"] == null){
 			console.log("enable value attribute missing.");
 		}
 
 		
 		
-		var position = light[i].getElementsByTagName('position');
-		var position_x = this.reader.getFloat(position[0], 'x',false);
-		if(position_x == null){
+		var position = light_block[i].getElementsByTagName('position');
+		light["position_x"] = this.reader.getFloat(position[0], 'x',false);
+		if(light["position_x"] == null){
 			console.log("position x attribute missing.");
 		}
-		var position_y = this.reader.getFloat(position[0], 'y',false);
-		if(position_y == null){
+		light["position_y"] = this.reader.getFloat(position[0], 'y',false);
+		if(light["position_y"] == null){
 			console.log("position y attribute missing.");
 		}
-		var position_z = this.reader.getFloat(position[0], 'z',false);
-		if(position_z == null){
+		light["position_z"] = this.reader.getFloat(position[0], 'z',false);
+		if(light["position_z"] == null){
 			console.log("position z attribute missing.");
 		}
-		var position_w = this.reader.getFloat(position[0], 'w',false);
-		if(position_w == null){
+		light["position_w"] = this.reader.getFloat(position[0], 'w',false);
+		if(light["position_w"] == null){
 			console.log("position w attribute missing.");
 		}
 
-		var ambient = light[i].getElementsByTagName('ambient');
-		var ambient_r = this.reader.getFloat(ambient[0], 'r', false);
-		if(ambient_r == null){
+		var ambient = light_block[i].getElementsByTagName('ambient');
+		light["ambient_r"] = this.reader.getFloat(ambient[0], 'r', false);
+		if(light["ambient_r"] == null){
 			console.log("ambient r attribute missing.");
 		}
-		var ambient_g = this.reader.getFloat(ambient[0], 'g', false);
-		if(ambient_g == null){
+		light["ambient_g"] = this.reader.getFloat(ambient[0], 'g', false);
+		if(light["ambient_g"]== null){
 			console.log("ambient g attribute missing.");
 		}
-		var ambient_b = this.reader.getFloat(ambient[0], 'b', false);
-		if(ambient_b == null){
+		light["ambient_b"] = this.reader.getFloat(ambient[0], 'b', false);
+		if(light["ambient_b"] == null){
 			console.log("ambient b attribute missing.");
 		}
-		var ambient_a = this.reader.getFloat(ambient[0], 'a', false);
-		if(ambient_a == null){
+		light["ambient_a"] = this.reader.getFloat(ambient[0], 'a', false);
+		if(light["ambient_a"] == null){
 			console.log("ambient a attribute missing.");
 		}
 	
-		var diffuse = light[i].getElementsByTagName('diffuse');
-		var diffuse_r = this.reader.getFloat(diffuse[0], 'r', false);
-		if(diffuse_r == null){
+		var diffuse = light_block[i].getElementsByTagName('diffuse');
+		light["diffuse_r"] = this.reader.getFloat(diffuse[0], 'r', false);
+		if(light["diffuse_r"] == null){
 			console.log("diffuse r attribute missing.");
 		}
-		var diffuse_g = this.reader.getFloat(diffuse[0], 'g', false);
-		if(diffuse_g == null){
+		light["diffuse_g"] = this.reader.getFloat(diffuse[0], 'g', false);
+		if(light["diffuse_g"] == null){
 			console.log("diffuse g attribute missing.");
 		}
-		var diffuse_b = this.reader.getFloat(diffuse[0], 'b', false);
-		if(diffuse_b == null){
+		light["diffuse_b"] = this.reader.getFloat(diffuse[0], 'b', false);
+		if(light["diffuse_b"] == null){
 			console.log("diffuse b attribute missing.");
 		}
-		var diffuse_a = this.reader.getFloat(diffuse[0], 'a', false);
-		if(diffuse_a == null){
+		light["diffuse_a"] = this.reader.getFloat(diffuse[0], 'a', false);
+		if(light["diffuse_a"] == null){
 			console.log("diffuse a attribute missing.");
 		}
 
 		
-		var specular =light[i].getElementsByTagName('specular');
-		var specular_r = this.reader.getFloat(specular[0], 'r', false);
-		if(specular_r == null){
+		var specular =light_block[i].getElementsByTagName('specular');
+		light["specular_r"] = this.reader.getFloat(specular[0], 'r', false);
+		if(light["specular_r"] == null){
 			console.log("specular r attribute missing.");
 		}
-		var specular_g = this.reader.getFloat(specular[0], 'g', false);
-		if(specular_g == null){
+		light["specular_g"] = this.reader.getFloat(specular[0], 'g', false);
+		if(light["specular_g"] == null){
 			console.log("specular g attribute missing.");
 		}
-		var specular_b = this.reader.getFloat(specular[0], 'b', false);
-		if(specular_b == null){
+		light["specular_b"] = this.reader.getFloat(specular[0], 'b', false);
+		if(light["specular_b"] == null){
 			console.log("specular b attribute missing.");
 		}
-		var specular_a = this.reader.getFloat(specular[0], 'a', false);
-		if(specular_a == null){
+		light["specular_a"] = this.reader.getFloat(specular[0], 'a', false);
+		if(light["specular_a"] == null){
 			console.log("specular a attribute missing.");
 		}
 
-		this.light_obj = new CGFlight(this.scene, id);
-		this.light_obj.setAmbient(ambient_r, ambient_g, ambient_b, ambient_a);
-		this.light_obj.setDiffuse(diffuse_r, diffuse_g, diffuse_b, diffuse_a);
-		this.light_obj.setSpecular(specular_r, specular_g, specular_b, specular_a);
-		this.light_obj.setPosition(position_x, position_y, position_z, position_w);
-
-		this.lights[id] = this.light_obj;
+		this.lights.push(light);
 	}
 
 }
@@ -520,7 +528,6 @@ MySceneGraph.prototype.parseMaterials = function(rootElement){
 		this.materials[id] = this.material_obj;
 	}
 
-	console.log(this.materials);
 }
 
 MySceneGraph.prototype.parseLeaves = function(rootElement){
@@ -539,11 +546,11 @@ MySceneGraph.prototype.parseLeaves = function(rootElement){
 	for(var i =0; i<leaf.length; i++){
 		var id = this.reader.getString(leaf[i], 'id', false);
 		if(id == null){
-			console.log("LEAF id attribute missing.");
+			return console.log("LEAF id attribute missing.");
 		}
 		var type = this.reader.getString(leaf[i], 'type', false);
 		if(id == null){
-			console.log("LEAF type attribute missing.");
+			return console.log("LEAF type attribute missing.");
 		}
 
 
@@ -551,7 +558,6 @@ MySceneGraph.prototype.parseLeaves = function(rootElement){
 
 		var args=this.reader.getString(leaf[i], 'args', false);
 		args=args.split(' ');
-		console.log(type);
 
 		switch(type){
 			case "rectangle":
@@ -559,7 +565,8 @@ MySceneGraph.prototype.parseLeaves = function(rootElement){
 				var top_left_y = args[1];
 				var bot_right_x = args[2];
 				var bot_right_y = args[3];
-				this.leaves[id] = new Rectangle(this.scene, top_left_x, top_left_y, bot_right_x, bot_right_y);
+				this.primitives[id] = new Rectangle(this.scene, top_left_x, top_left_y, bot_right_x, bot_right_y);
+
 				break;
 
 			case "cylinder" :
@@ -568,14 +575,14 @@ MySceneGraph.prototype.parseLeaves = function(rootElement){
 				var top_radius = args[2];
 				var secs_along_height = args[3];
 				var parts_per_section = args[4];
-				this.leaves[id] = new Cylinder(this.scene, height, bot_radius, top_radius, secs_along_height, parts_per_section);
+				this.primitives[id] = new Cylinder(this.scene, height, bot_radius, top_radius, secs_along_height, parts_per_section);
 				break;
 
 			case "sphere":
 				var radius = args[0];
 				var parts_along_radius = args[1];
 				var parts_per_section = args[2];
-				this.leaves[id] = new Sphere(this.scene, radius, parts_along_radius, parts_per_section);
+				this.primitives[id] = new Sphere(this.scene, radius, parts_along_radius, parts_per_section);
 				break;
 
 			case "triangle":
@@ -591,15 +598,22 @@ MySceneGraph.prototype.parseLeaves = function(rootElement){
 				var v3y = args[7];
 				var v3z = args[8];
 
-				this.leaves[id] = new Node(this.scene, id, new Triangle(this.scene, v1x, v1y, v1z, v2x, v2y, v2z, v3x, v3y, v3z) );
+				this.primitives[id] = new Triangle(this.scene, v1x, v1y, v1z, v2x, v2y, v2z, v3x, v3y, v3z);
+				
+
 				break;
-
-
 		}
+				
+				new_node = [];
+				new_node["material"] = "null";
+				new_node["texture"] = "null";
+				new_node["transfomations"] = [];
+				new_node["descendants"] = [];
+			
 
+				this.nodes[id] = new_node;
 
 	}
-	console.log(this.leaves);
 }
 
 MySceneGraph.prototype.parseNodes = function(rootElement){
@@ -613,10 +627,11 @@ MySceneGraph.prototype.parseNodes = function(rootElement){
 	}
 
 	
-
-	var node = elems[0].getElementsByTagName('NODE');
-	this.rootNode = this.reader.getString(node[0], 'id', false);
+	var root = elems[0].getElementsByTagName('ROOT');
 	
+	this.root_node = this.reader.getString(root[0], 'id', false);
+	
+	var node = elems[0].getElementsByTagName('NODE');
 	for(var i=0; i<node.length; i++){
 
 		var node_id = this.reader.getString(node[i], 'id', false);
@@ -649,7 +664,7 @@ MySceneGraph.prototype.parseNodes = function(rootElement){
 					transform["angle"] = this.reader.getFloat(trans_list[j], 'angle', false);
 					transforms.push(transform);
 					break;
-				case ' SCALE':
+				case 'SCALE':
 					transform["type"] = type;
 					transform["scale_x"] = this.reader.getFloat(trans_list[j], 'sx', false);
 					transform["scale_y"] = this.reader.getFloat(trans_list[j], 'sy', false);
@@ -694,7 +709,13 @@ MySceneGraph.prototype.parseNodes = function(rootElement){
 MySceneGraph.prototype.createNodes = function(){
 	for(var i in this.nodes){
 		var node = this.nodes[i];
-		this.graph_nodes[i] = new SceneNode(this.scene, i , node["material"], node["texture"], node["transfomations"]);
+		if(node["texture"] != "null" && node["texture"] != "clear"){
+			this.graph_nodes[i] = new SceneNode(this.scene, i , this.materials[node["material"]], this.textures[node["texture"]], node["transfomations"]);
+		}else if(node["texture"] == "null"){
+			this.graph_nodes[i] = new SceneNode(this.scene, i , this.materials[node["material"]], "null", node["transfomations"]);
+		}else if(node["texture"] == "clear"){
+			this.graph_nodes[i] = new SceneNode(this.scene, i , this.materials[node["material"]], "clear", node["transfomations"]);
+		}
 	}
 
 	for(var i in this.nodes){
@@ -702,8 +723,10 @@ MySceneGraph.prototype.createNodes = function(){
 			if(this.graph_nodes[this.nodes[i]["descendants"][j]] != undefined)
 			this.graph_nodes[i].add_descendant(this.graph_nodes[this.nodes[i]["descendants"][j]]);
 		}
-		console.log(this.graph_nodes[i]);
-		console.log(this.graph_nodes[i]["descendants"]);
+		if(isEmpty(this.graph_nodes[i].descendants)){
+			console.log("primitive set");
+			this.graph_nodes[i].set_primitive(this.primitives[i]);
+		}
 	}
 
 }
@@ -720,3 +743,11 @@ MySceneGraph.prototype.onXMLError=function (message) {
 };
 
 
+function isEmpty(map) {
+   for(var key in map) {
+      if (map.hasOwnProperty(key)) {
+         return false;
+      }
+   }
+   return true;
+}

@@ -9,17 +9,20 @@ function SceneNode(scene, id, material, texture, transforms){
     this.transforms = transforms;
     this.descendants = [];
     this.matrix = (new Matrix(transforms)).matrix;
+    this.primitive = undefined;
 }
 
 SceneNode.prototype.constructor = SceneNode;
 
-SceneNode.prototype.display = function(){
-    this.scene.pushMatrix();
-    this.scene.multMatrix(this.matrix);
-    
-
-}
 
 SceneNode.prototype.add_descendant = function(descendant){
     this.descendants.push(descendant);
+}
+
+SceneNode.prototype.set_primitive = function(primitive){
+    this.primitive = primitive;
+}
+
+SceneNode.prototype.set_texture = function(texture){
+    this.texture = texture; 
 }

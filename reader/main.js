@@ -11,21 +11,21 @@ function getUrlVars() {
     return vars;
 }	 
 
-serialInclude(['../lib/CGF.js', 'XMLscene.js', 'SceneNode.js', 'MySceneGraph.js', 'cylinder_primitive.js' ,  'rectangle_primitive.js', 'sphere_primitive.js', 'triangle_primitive.js',  'Matrix.js',  
+serialInclude(['../lib/CGF.js', 'XMLscene.js', 'SceneNode.js', 'MySceneGraph.js', 'cylinder_primitive.js' ,  'rectangle_primitive.js', 'sphere_primitive.js', 'triangle_primitive.js',  'Matrix.js',  'MyInterface.js',
 
 main=function()
 {
 	// Standard application, scene and interface setup
     var app = new CGFapplication(document.body);
     var myScene = new XMLscene();
-    var myInterface = new CGFinterface();
+    var Interface = new MyInterface();
 
     app.init();
 
     app.setScene(myScene);
-    app.setInterface(myInterface);
+    app.setInterface(Interface);
 
-    myInterface.setActiveCamera(myScene.camera);
+    Interface.setActiveCamera(myScene.camera);
 
 	// get file name provided in URL, e.g. http://localhost/myproj/?file=myfile.xml 
 	// or use "demo.xml" as default (assumes files in subfolder "scenes", check MySceneGraph constructor) 

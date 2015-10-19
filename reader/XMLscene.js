@@ -10,6 +10,15 @@ XMLscene.prototype.init = function (application) {
     CGFscene.prototype.init.call(this, application);
 
     this.initCameras();
+
+    this.light_0 = true;
+    this.light_1 = true;
+    this.light_2 = true;
+    this.light_3 = true;
+    this.light_4 = true;
+    this.light_5 = true;
+    this.light_6 = true;
+    this.light_7 = true;
   
 
     this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -119,7 +128,7 @@ XMLscene.prototype.processGraph = function(nodeId){
 		}
 
 		var current_texture = this.activeTexture;
-		console.log(current_texture, this.activeTexture, nodeId);
+		//console.log(current_texture, this.activeTexture, nodeId);
 
 		//percorre o grafo recursivamente
 		for(var i in node.descendants){
@@ -174,6 +183,47 @@ XMLscene.prototype.display = function () {
 	{
 		
 		this.processGraph(this.graph.root_node);
+
+		if(this.light_0){
+			this.lights[0].enable();
+		}else{
+			this.lights[0].disable();
+		}
+		if(this.light_1){
+			this.lights[1].enable();
+		}else{
+			this.lights[1].disable();
+		}
+		if(this.light_2){
+			this.lights[2].enable();
+		}else{
+			this.lights[2].disable();
+		}
+		if(this.light_3){
+			this.lights[3].enable();
+		}else{
+			this.lights[3].disable();
+		}
+		if(this.light_4){
+			this.lights[4].enable();
+		}else{
+			this.lights[4].disable();
+		}
+		if(this.light_5){
+			this.lights[5].enable();
+		}else{
+			this.lights[5].disable();
+		}
+		if(this.light_6){
+			this.lights[6].enable();
+		}else{
+			this.lights[6].disable();
+		}
+		if(this.light_7){
+			this.lights[7].enable();
+		}else{
+			this.lights[7].disable();
+		}
 
 		for (var i = 0; i < this.lights.length; i++)
 		{

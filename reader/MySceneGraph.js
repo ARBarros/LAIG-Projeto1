@@ -1,7 +1,12 @@
-
+/**
+*	MySceneGraph
+*	@param filename
+*	@param scene
+**/
 function MySceneGraph(filename, scene) {
 	this.loadedOk = null;
 
+	//variaveis em que vao ser guardadas todas as informações do bloco correspondente
 	this.initials = [];
 	this.illumination = [];
 	this.lights = [];
@@ -12,6 +17,8 @@ function MySceneGraph(filename, scene) {
 	this.graph_nodes = [];
 	this.primitives = [];
 	this.root_node;
+
+
 	// Establish bidirectional references between scene and graph
 	this.scene = scene;
 	scene.graph=this;
@@ -99,6 +106,10 @@ MySceneGraph.prototype.parseGlobalsExample= function(rootElement) {
 	
 };
 
+/**
+*	parse
+*	@param rootElement
+**/
 MySceneGraph.prototype.parse = function(rootElement){
 	this.parseInitials(rootElement);
 	this.parseIllumination(rootElement);
@@ -110,6 +121,10 @@ MySceneGraph.prototype.parse = function(rootElement){
 }
 
 
+/**
+*	parseInitials
+*	@param rootElement
+**/
 MySceneGraph.prototype.parseInitials = function(rootElement) {
 	var elems = rootElement.getElementsByTagName('INITIALS');
 	if (elems == null) {
@@ -216,6 +231,10 @@ MySceneGraph.prototype.parseInitials = function(rootElement) {
 }
 
 
+/**
+*	parseIllumination
+*	@param rootElement
+**/
 MySceneGraph.prototype.parseIllumination = function(rootElement){
 	var elems = rootElement.getElementsByTagName('ILLUMINATION');
 	if (elems == null) {
@@ -276,6 +295,10 @@ MySceneGraph.prototype.parseIllumination = function(rootElement){
 	
 }
 
+/**
+*	parse
+*	@param rootLights
+**/
 MySceneGraph.prototype.parseLights = function(rootElement){
 	var elems = rootElement.getElementsByTagName('LIGHTS');
 	if (elems == null) {
@@ -384,6 +407,10 @@ MySceneGraph.prototype.parseLights = function(rootElement){
 
 }
 
+/**
+*	parseTextures
+*	@param rootElement
+**/
 MySceneGraph.prototype.parseTextures = function(rootElement){
 	var elems = rootElement.getElementsByTagName('TEXTURES');
 	if (elems == null) {
@@ -425,6 +452,11 @@ MySceneGraph.prototype.parseTextures = function(rootElement){
 	}
 }
 
+
+/**
+*	parseMaterials
+*	@param rootElement
+**/
 MySceneGraph.prototype.parseMaterials = function(rootElement){
 	var elems = rootElement.getElementsByTagName('MATERIALS');
 	if (elems == null) {
@@ -530,6 +562,10 @@ MySceneGraph.prototype.parseMaterials = function(rootElement){
 
 }
 
+/**
+*	parseLeaves
+*	@param rootElement
+**/
 MySceneGraph.prototype.parseLeaves = function(rootElement){
 	var elems = rootElement.getElementsByTagName('LEAVES');
 	if (elems == null) {
@@ -616,6 +652,11 @@ MySceneGraph.prototype.parseLeaves = function(rootElement){
 	}
 }
 
+
+/**
+*	parseNodes
+*	@param rootElement
+**/
 MySceneGraph.prototype.parseNodes = function(rootElement){
 	var elems = rootElement.getElementsByTagName('NODES');
 	if (elems == null) {
@@ -706,7 +747,12 @@ MySceneGraph.prototype.parseNodes = function(rootElement){
 	}
 }
 
+
+/**
+*	createNodes
+**/
 MySceneGraph.prototype.createNodes = function(){
+	//ciclo que cria os objectos
 	for(var i in this.nodes){
 		var node = this.nodes[i];
 		if(node["texture"] != "null" && node["texture"] != "clear"){
@@ -717,14 +763,13 @@ MySceneGraph.prototype.createNodes = function(){
 			this.graph_nodes[i] = new SceneNode(this.scene, i , this.materials[node["material"]], "clear", node["transfomations"]);
 		}
 	}
-
+	//ciclo que adiciona os descendentes a cada node
 	for(var i in this.nodes){
 		for(var j in this.nodes[i]["descendants"]){
 			if(this.graph_nodes[this.nodes[i]["descendants"][j]] != undefined)
 			this.graph_nodes[i].add_descendant(this.graph_nodes[this.nodes[i]["descendants"][j]]);
 		}
 		if(isEmpty(this.graph_nodes[i].descendants)){
-			console.log("primitive set");
 			this.graph_nodes[i].set_primitive(this.primitives[i]);
 		}
 	}
@@ -742,7 +787,10 @@ MySceneGraph.prototype.onXMLError=function (message) {
 	this.loadedOk=false;
 };
 
-
+/**
+*	isEmpty
+*	@param map
+**/
 function isEmpty(map) {
    for(var key in map) {
       if (map.hasOwnProperty(key)) {

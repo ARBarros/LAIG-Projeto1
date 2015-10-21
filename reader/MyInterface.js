@@ -31,14 +31,7 @@ MyInterface.prototype.init = function(application) {
 	lights_menu.add(this.scene, 'light_5').listen();
 	lights_menu.add(this.scene, 'light_6').listen();
 	lights_menu.add(this.scene, 'light_7').listen();
-	
 
-/*
-	var lights = this.scene.lights;
-	console.log(lights);
-	for(var i=0; i < lights; i++){
-	    lights_menu.add(this.scene, 'light_' +i).listen();
-	}
-*/
+
 	return true;
 };

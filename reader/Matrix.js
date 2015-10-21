@@ -1,7 +1,17 @@
+/**
+*   degToRad
+*   @param ang
+**/
+
+
 function degToRad(ang){
     return (Math.PI*ang)/180;
 }
 
+/**
+*   Matrix
+*   @param transforms
+**/
 function Matrix(transforms){
    
     this.matrix = mat4.create();

@@ -1,6 +1,15 @@
 /**
  * Triangle
- * @param gl {WebGLRenderingContext}
+ * @param scene CGFscene where the Rectangle will be displayed
+ * @param v1x x coordinate of the first triangle vertex
+ * @param v1y y coordinate of the first triangle vertex
+ * @param v1z z coordinate of the first triangle vertex
+ * @param v2x x coordinate of the second triangle vertex
+ * @param v2y y coordinate of the second triangle vertex
+ * @param v2z z coordinate of the second triangle vertex
+ * @param v3x x coordinate of the third triangle vertex
+ * @param v3y y coordinate of the third triangle vertex
+ * @param v3z z coordinate of the third triangle vertex
  * @constructor
  */
 function Triangle(scene, v1x, v1y, v1z, v2x, v2y, v2z, v3x, v3y, v3z) {
@@ -15,12 +24,18 @@ function Triangle(scene, v1x, v1y, v1z, v2x, v2y, v2z, v3x, v3y, v3z) {
 	this.v3x = v3x;
 	this.v3y = v3y;
 	this.v3z = v3z;
+	
+	this.minS = 0;
+	this.minT = 0;
+	this.maxS = 1;
+	this.maxT = 1;
 
 	this.initBuffers();
 };
 
 Triangle.prototype = Object.create(CGFobject.prototype);
 Triangle.prototype.constructor=Triangle;
+
 
 Triangle.prototype.initBuffers = function () {
 	this.vertices = [
@@ -48,16 +63,30 @@ Triangle.prototype.initBuffers = function () {
     this.texCoords = [
 		this.minS, this.minT,
 		this.maxS, this.minT,
-		ab - bc*Math.cos(beta), bc*Math.sin(beta)
+		(ab - bc*Math.cos(beta))/ab, bc*Math.sin(beta)/ab
     ];
 		
 	this.primitiveType=this.scene.gl.TRIANGLES;
 	this.initGLBuffers();
 };
 
-Triangle.prototype.setAmplifFactor = function(amplif_factor) {
-	// TODO
-	
+/**
+ * Updates the Triangle amplification factors
+ * @param amplif_s
+ * @param amplif_t
+ */
+Triangle.prototype.setAmplifFactor = function(amplif_s, amplif_t) {
+    
+    var ab = Math.sqrt(Math.pow(this.v2x-this.v1x, 2) + Math.pow(this.v2y-this.v1y, 2) + Math.pow(this.v2z-this.v1z, 2));
+    var bc = Math.sqrt(Math.pow(this.v2x-this.v3x, 2) + Math.pow(this.v2y-this.v3y, 2) + Math.pow(this.v2z-this.v3z, 2));
+    var ac = Math.sqrt(Math.pow(this.v1x-this.v3x, 2) + Math.pow(this.v1y-this.v3y, 2) + Math.pow(this.v1z-this.v3z, 2));
+    var beta = Math.acos((Math.pow(bc, 2) + Math.pow(ab, 2) - Math.pow(ac, 2))/(2*ab*bc));
+    
+    this.texCoords = [
+		this.minS, this.minT,
+		this.maxS, this.minT*ab/amplif_s,
+		((ab - bc*Math.cos(beta))/ab)*ab/amplif_s, (bc*Math.sin(beta)/ab)*ab/amplif_t
+    ];	
 	
 	this.updateTexCoordsGLBuffers();
 }

@@ -1,6 +1,10 @@
 /**
  * Rectangle
- * @param gl {WebGLRenderingContext}
+ * @param scene CGFscene where the Rectangle will be displayed
+ * @param left_top_x x coordinate of the left top vertex
+ * @param left_top_y y coordinate of the left top vertex
+ * @param right_bottom_x x coordinate of the right bottom vertex
+ * @param right_bottom_y y coordinate of the right bottom vertex
  * @constructor
  */
 function Rectangle(scene, left_top_x, left_top_y, right_bottom_x, right_bottom_y) {
@@ -36,6 +40,7 @@ function Rectangle(scene, left_top_x, left_top_y, right_bottom_x, right_bottom_y
 Rectangle.prototype = Object.create(CGFobject.prototype);
 Rectangle.prototype.constructor=Rectangle;
 
+
 Rectangle.prototype.initBuffers = function () {
 	
 	this.vertices = [
@@ -58,26 +63,31 @@ Rectangle.prototype.initBuffers = function () {
     ];
          
     this.texCoords = [
-     		this.minS, this.minT,
-     		this.maxS, this.minT,
      		this.minS, this.maxT,
-     		this.maxS, this.maxT
+     		this.maxS, this.maxT,
+     		this.minS, this.minT,
+     		this.maxS, this.minT
     ]
      		
     this.primitiveType=this.scene.gl.TRIANGLES;
     this.initGLBuffers();
 };
 
-Rectangle.prototype.setAmplifFactor = function(amplif_factor) {
+/**
+ * Updates the Rectangle amplification factors
+ * @param amplif_s
+ * @param amplif_t
+ */
+Rectangle.prototype.setAmplifFactor = function(amplif_s, amplif_t) {
 	var dist_s = Math.abs(this.left_top_x - this.right_bottom_x);
 	var dist_t = Math.abs(this.left_top_y - this.right_bottom_y);
-	
-	this.texCoords = [
-	     this.minS, this.minT,
-	     this.maxS*dist_s/amplif_factor, this.minT,
-	     this.minS, this.maxT*dist_t/amplif_factor,
-	     this.maxS*dist_s/amplif_factor, this.maxT*dist_t/amplif_factor
-	];
+         
+    this.texCoords = [
+     		this.minS, this.maxT*dist_t/amplif_t,
+     		this.maxS*dist_s/amplif_s, this.maxT*dist_t/amplif_t,
+     		this.minS, this.minT,
+     		this.maxS*dist_s/amplif_s, this.minT
+    ];
 	
 	this.updateTexCoordsGLBuffers();
 }

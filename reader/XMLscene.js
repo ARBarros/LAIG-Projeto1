@@ -3,14 +3,21 @@ function XMLscene() {
     CGFscene.call(this);
 }
 
+
+function degToRad(ang){
+    return (Math.PI*ang)/180;
+}
+
 XMLscene.prototype = Object.create(CGFscene.prototype);
 XMLscene.prototype.constructor = XMLscene;
+
 
 XMLscene.prototype.init = function (application) {
     CGFscene.prototype.init.call(this, application);
 
     this.initCameras();
 
+	//variaveis para a interface das luzes
     this.light_0 = true;
     this.light_1 = true;
     this.light_2 = true;
@@ -33,6 +40,7 @@ XMLscene.prototype.init = function (application) {
 	this.enableTextures(true);
 };
 
+
 XMLscene.prototype.initLights = function () {
 
 	this.setGlobalAmbientLight(this.graph.illumination["ambient_r"], this.graph.illumination["ambient_g"], this.graph.illumination["ambient_b"], this.graph.illumination["ambient_a"]);
@@ -44,7 +52,7 @@ XMLscene.prototype.initLights = function () {
     this.lights[0].update();
 */
 	
-
+	//ciclo que vai buscar as informações das luzes que estão armazenadas no grafo
 	for(var i=0; i< this.graph.lights.length; i++){
 		this.lights[i].setPosition(this.graph.lights[i]["position_x"],this.graph.lights[i]["position_y"],this.graph.lights[i]["position_z"],this.graph.lights[i]["position_w"]);
 		this.lights[i].setDiffuse(this.graph.lights[i]["diffuse_r"], this.graph.lights[i]["diffuse_g"],this.graph.lights[i]["diffuse_b"],this.graph.lights[i]["diffuse_a"]);
@@ -63,10 +71,14 @@ XMLscene.prototype.initLights = function () {
     this.shader.unbind();
 };
 
+//funçao que aplica as transformacoes iniciais e as propriedades da camera
 XMLscene.prototype.Initials = function(){
 	this.camera.near = this.graph.initials["frustum near"];
 	this.camera.far = this.graph.initials["frustum far"];
-
+	
+	mat4.rotate(this.initial_matrix, this.initial_matrix, degToRad(this.graph.initials["rotation1 angle"]), this.graph.initials["rotation1 axis"]);
+	mat4.rotate(this.initial_matrix, this.initial_matrix, degToRad(this.graph.initials["rotation2 angle"]), this.graph.initials["rotation2 axis"]);
+	mat4.rotate(this.initial_matrix, this.initial_matrix, degToRad(this.graph.initials["rotation3 angle"]), this.graph.initials["rotation3 axis"]);
 	mat4.translate(this.initial_matrix, this.initial_matrix, [this.graph.initials["translation x"],this.graph.initials["translation y"],this.graph.initials["translation z"] ] );
 
 }
@@ -93,9 +105,13 @@ XMLscene.prototype.onGraphLoaded = function ()
 };
 
 
+
+/*
+*	ProcessGraph função que percorre o grafo e aplica as tranformações, materiais e texturas de cada node e as faz display das primitivas dos leaf nodes
+*	@param nodeId
+*/
 XMLscene.prototype.processGraph = function(nodeId){
 	var material = null;
-	//console.log("cenas yay",  this.activeTexture, nodeId);
 	if(nodeId != null){
 		var node = this.graph.graph_nodes[nodeId];
 		
@@ -117,7 +133,6 @@ XMLscene.prototype.processGraph = function(nodeId){
 		if(node.texture === "clear"){
 			if(this.activeTexture !== null){
 				this.activeTexture.unbind();
-				//console.log("unbind");
 			}
 		}else if(node.texture !== "null"){
 			//console.log("fazendo o real bind" + nodeId);
@@ -128,7 +143,6 @@ XMLscene.prototype.processGraph = function(nodeId){
 		}
 
 		var current_texture = this.activeTexture;
-		//console.log(current_texture, this.activeTexture, nodeId);
 
 		//percorre o grafo recursivamente
 		for(var i in node.descendants){
@@ -184,6 +198,7 @@ XMLscene.prototype.display = function () {
 		
 		this.processGraph(this.graph.root_node);
 
+		///Block for lights interface
 		if(this.light_0){
 			this.lights[0].enable();
 		}else{
@@ -224,6 +239,9 @@ XMLscene.prototype.display = function () {
 		}else{
 			this.lights[7].disable();
 		}
+		/////end of block	
+	
+
 
 		for (var i = 0; i < this.lights.length; i++)
 		{

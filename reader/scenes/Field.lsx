@@ -62,11 +62,6 @@
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
 
-    <TEXTURE id="madeira">
-        <file path="textures/madeira.png" />                             <!-- path to file -->
-        <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
-    </TEXTURE>
-
     <TEXTURE id="mesa">
         <file path="textures/mesa.png" />                             <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
@@ -82,18 +77,13 @@
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
 
-    <TEXTURE id="resultado_lateral">
-        <file path="textures/resultado_lateral.png" />                             <!-- path to file -->
-        <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
-    </TEXTURE>
-
     <TEXTURE id="sirene">
         <file path="textures/sirene.png" />                             <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
     
-    <TEXTURE id="base_sirene">
-        <file path="textures/base_sirene.png" />                             <!-- path to file -->
+    <TEXTURE id="base">
+        <file path="textures/base.png" />                             <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
     
@@ -121,7 +111,7 @@
     <!-- next lines define nodes of type leaf; they may be repeated, in any order, as necessary -->
     <LEAF id="retangulo" type="rectangle" args="-0.5 -0.5 0.5 0.5" />
     <LEAF id="cilindro" type="cylinder" args="1 0.5 0.5 1 30" /> 
-    <LEAF id="esfera" type="sphere" args="0.2 10 30" />
+    <LEAF id="esfera" type="sphere" args="0.2 10 20" />
     <LEAF id="triangulo" type="triangle" args="0 0 -0.5 0 0 0.5 0 0.5 0" />
 
 	
@@ -277,7 +267,7 @@
         <!-- next two lines are mandatory -->
         <MATERIAL id="0" />      <!-- declared material superimposes the material received from parent node -->
                                   <!-- id="null" maintains material from parent node        -->
-        <TEXTURE id="resultado_lateral" />       <!-- declared texture superimposes the texture received from parent node -->
+        <TEXTURE id="clear" />       <!-- declared texture superimposes the texture received from parent node -->
                                   <!-- id="null" maintains texture from parent node       -->
                                   <!-- id="clear" clears texture declaration received from parent node      -->
 
@@ -300,7 +290,7 @@
         <!-- next two lines are mandatory -->
         <MATERIAL id="0" />      <!-- declared material superimposes the material received from parent node -->
                                   <!-- id="null" maintains material from parent node        -->
-        <TEXTURE id="resultado_lateral" />       <!-- declared texture superimposes the texture received from parent node -->
+        <TEXTURE id="clear" />       <!-- declared texture superimposes the texture received from parent node -->
                                   <!-- id="null" maintains texture from parent node       -->
                                   <!-- id="clear" clears texture declaration received from parent node      -->
 
@@ -888,7 +878,7 @@
         <!-- next two lines are mandatory -->
         <MATERIAL id="0" />      <!-- declared material superimposes the material received from parent node -->
                                   <!-- id="null" maintains material from parent node        -->
-        <TEXTURE id="clear" />       <!-- declared texture superimposes the texture received from parent node -->
+        <TEXTURE id="base" />       <!-- declared texture superimposes the texture received from parent node -->
                                   <!-- id="null" maintains texture from parent node       -->
                                   <!-- id="clear" clears texture declaration received from parent node      -->
 
